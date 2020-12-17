@@ -11,7 +11,7 @@
 #define EGL_YUV_FULL_RANGE_EXT            0x3282
 #define EGL_YUV_NARROW_RANGE_EXT          0x3283
 
-#define MAXLayer 160
+#define MAXLayer 160 
 typedef struct layer_info {
     int fd;
     int afbc_falg;
