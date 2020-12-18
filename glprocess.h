@@ -14,7 +14,7 @@
 #define MAXLayer 160 
 typedef struct layer_info {
     int fd;
-    int afbc_falg;
+    int afbc_flag;
     int format;
     int color_space ;
     int sample_range;
