@@ -10,12 +10,16 @@
 #define EGL_ITU_REC2020_EXT               0x3281
 #define EGL_YUV_FULL_RANGE_EXT            0x3282
 #define EGL_YUV_NARROW_RANGE_EXT          0x3283
+#define OP_RENDER_TEXTURE 0
+#define OP_COLOR_FILL    1
+
 
 #define MAXLayer 160 
 typedef struct layer_info {
     int fd;
     int afbc_flag;
     int format;
+    float cfillRgb[3];
     int color_space ;
     int sample_range;
     int width;
@@ -31,6 +35,7 @@ typedef struct layer_list {
     layer_info_t srcLayerInfo[MAXLayer];
     layer_info_t dstLayerInfo[MAXLayer];
     int numLayer;
+    int op;
     float wfRgb[3];
     float fcfRgb[3];
     int px;
