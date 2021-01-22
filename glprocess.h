@@ -60,6 +60,19 @@ typedef struct _mosaic_info{
 } mosaic_info_t;
 
 
+typedef struct _wireframe_info_t{
+    int left;
+    int top;
+    int right;
+    int bottom;
+    float color[3];
+    int lpx;
+    int tpx;
+    int rpx;
+    int bpx;
+ 
+} wireframe_info_t;
+
 typedef struct layer_info {
     int fd;
     int afbc_flag;
@@ -76,6 +89,7 @@ typedef struct layer_info {
     int rotation;
     quadrl_t quadril_info;
     mosaic_info_t mosic_info;
+    wireframe_info_t wireframe_info;
 } layer_info_t;
 
 typedef struct layer_list {
