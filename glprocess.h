@@ -10,33 +10,36 @@
 #define EGL_ITU_REC2020_EXT               0x3281
 #define EGL_YUV_FULL_RANGE_EXT            0x3282
 #define EGL_YUV_NARROW_RANGE_EXT          0x3283
-#define OP_RENDER_TEXTURE 0
-#define OP_COLOR_FILL    1
-#define OP_DRAW_LINES    2 
 
+typedef enum {
+    RKGCC_NVR_OP_RENDER_TEXTURE = 0,
+    RKGCC_NVR_OP_COLOR_FILL,
+    RKGCC_NVR_OP_DRAW_LINES,
+} RKGCC_NVR_OP;
 
 #define MAXLayer 160 
 
 #define MAXLines 64
 
-typedef struct point {
+
+typedef struct RKGFX_NVR_point_s {
     int x;
     int y;  
-} point_t;
+} RKGFX_NVR_point_t;
 
-typedef struct line{
-    point_t startPt;
-    point_t endPt;
+typedef struct RKGFX_NVR_line_s{
+    RKGFX_NVR_point_t startPt;
+    RKGFX_NVR_point_t endPt;
     int lineW;
     float color[3];
-} line_t;
+} RKGFX_NVR_line_t;
 
-typedef struct lines{
-    line_t linesArray[MAXLines];
+typedef struct RKGFX_NVR_lines_s{
+    RKGFX_NVR_line_t linesArray[MAXLines];
     int numlines;
-} lines_t;
+} RKGFX_NVR_lines_t;
 
-typedef struct quadrl_info {
+typedef struct RKGFX_NVR_quadrl_info_s {
     float color[3];
     int coord[8];  
     // [0]=x0 [1]=y0, [2]=x1 [3]=y1,  [4]=x2 [5]=y2,  [6]=x3 [7]=y3
@@ -48,19 +51,19 @@ typedef struct quadrl_info {
     
     int lineW;
     int quadBox;   // If you want to render the border this flag is set to 1
-} quadrl_t;
+} RKGFX_NVR_quadrl_t;
 
-typedef struct _mosaic_info{
+typedef struct RKGFX_NVR_mosaic_info_s{
     int left;
     int top;
     int right;
     int bottom;
     int bsize;
     int mode;
-} mosaic_info_t;
+} RKGFX_NVR_mosaic_info_t;
 
 
-typedef struct _wireframe_info_t{
+typedef struct RKGFX_NVR_wireframe_info_s{
     int left;
     int top;
     int right;
@@ -71,9 +74,16 @@ typedef struct _wireframe_info_t{
     int rpx;
     int bpx;
  
-} wireframe_info_t;
+} RKGFX_NVR_wireframe_info_t;
 
-typedef struct layer_info {
+typedef struct RKGFX_NVR_alpha_lut_info_s{
+   unsigned char map_0;
+   unsigned char map_1;
+   
+} RKGFX_NVR_alpha_lut_info_t;
+
+
+typedef struct RKGFX_NVR_layer_info_s{
     int fd;
     int afbc_flag;
     int format;
@@ -87,15 +97,16 @@ typedef struct layer_info {
     int bottom;
     int focuswin;
     int rotation;
-    quadrl_t quadril_info;
-    mosaic_info_t mosic_info;
-    wireframe_info_t wireframe_info;
-} layer_info_t;
+    RKGFX_NVR_quadrl_t quadril_info;
+    RKGFX_NVR_mosaic_info_t mosic_info;
+    RKGFX_NVR_wireframe_info_t wireframe_info;
+    RKGFX_NVR_alpha_lut_info_t alpha_lut_info;
+} RKGFX_NVR_layer_info_t;
 
-typedef struct layer_list {
-    layer_info_t srcLayerInfo[MAXLayer];
-    layer_info_t dstLayerInfo[MAXLayer];
-    lines_t lineSet;
+typedef struct RKGFX_NVR_layer_list_s{
+    RKGFX_NVR_layer_info_t srcLayerInfo[MAXLayer];
+    RKGFX_NVR_layer_info_t dstLayerInfo[MAXLayer];
+    RKGFX_NVR_lines_t lineSet;
     int numLayer;
     int op;
     float wfRgb[3];
@@ -103,19 +114,19 @@ typedef struct layer_list {
     int px;
     int pxfc;
     int imgReserve;
-} layer_list_t;
+} RKGFX_NVR_layer_list_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-void *doByGpuCreate();
-int doByGpuInit(void *p,int screenW,int screenH,int priority);
-int doByGpuComposition(void *p,layer_list_t *layerinfo);
-void* doByGpucreateFence(void *p);
-int doByGpuwaitFence(void *p,void *fence);
-int doByGpuDestroy(void *p);
+void* RKGFX_NVR_create();
+int   RKGFX_NVR_init(void *p,int screenW,int screenH,int priority);
+int   RKGFX_NVR_composite(void *p,RKGFX_NVR_layer_list_t *layerinfo);
+void* RKGFX_NVR_create_fence(void *p);
+int   RKGFX_NVR_wait_fence(void *p,void *fence);
+int   RKGFX_NVR_destroy(void *p);
 
 #ifdef __cplusplus
 }
