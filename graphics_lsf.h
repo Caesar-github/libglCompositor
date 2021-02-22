@@ -12,58 +12,57 @@
 #define EGL_YUV_NARROW_RANGE_EXT          0x3283
 
 typedef enum {
-    RKGCC_NVR_OP_RENDER_TEXTURE = 0,
-    RKGCC_NVR_OP_COLOR_FILL,
-    RKGCC_NVR_OP_DRAW_LINES,
-} RKGCC_NVR_OP;
+    RKGFX_LSF_OP_RENDER_TEXTURE = 0,
+    RKGFX_LSF_OP_COLOR_FILL,
+    RKGFX_LSF_OP_DRAW_LINES,
+} RKGFX_LSF_OP;
 
-#define MAXLayer 160 
+#define MAXLayer 128
 
 #define MAXLines 64
 
 
-typedef struct RKGFX_NVR_point_s {
+typedef struct RKGFX_LSF_POINT_S {
     int x;
-    int y;  
-} RKGFX_NVR_point_t;
+    int y;
+} RKGFX_LSF_POINT_T;
 
-typedef struct RKGFX_NVR_line_s{
-    RKGFX_NVR_point_t startPt;
-    RKGFX_NVR_point_t endPt;
+typedef struct RKGFX_LSF_LINE_S{
+    RKGFX_LSF_POINT_T startPt;
+    RKGFX_LSF_POINT_T endPt;
     int lineW;
     float color[3];
-} RKGFX_NVR_line_t;
+} RKGFX_LSF_LINE_T;
 
-typedef struct RKGFX_NVR_lines_s{
-    RKGFX_NVR_line_t linesArray[MAXLines];
+typedef struct RKGFX_LSF_LINES_S{
+    RKGFX_LSF_LINE_T linesArray[MAXLines];
     int numlines;
-} RKGFX_NVR_lines_t;
+} RKGFX_LSF_LINES_T;
 
-typedef struct RKGFX_NVR_quadrl_info_s {
+typedef struct RKGFX_LSF_QUADRL_INFO_S {
     float color[3];
-    int coord[8];  
+    int coord[8];
     // [0]=x0 [1]=y0, [2]=x1 [3]=y1,  [4]=x2 [5]=y2,  [6]=x3 [7]=y3
     //        (x0,y0)------- (x3,y3)
     //               |     |
     //               |     |
     //               |     |
-    //        (x1,y1)------- (x2,y2)
-    
+    //        (x1,y1)------- (x2,y2)    
     int lineW;
     int quadBox;   // If you want to render the border this flag is set to 1
-} RKGFX_NVR_quadrl_t;
+} RKGFX_LSF_QUADRL_INFO_T;
 
-typedef struct RKGFX_NVR_mosaic_info_s{
+typedef struct RKGFX_LSF_MOSAIC_INFO_S{
     int left;
     int top;
     int right;
     int bottom;
     int bsize;
     int mode;
-} RKGFX_NVR_mosaic_info_t;
+} RKGFX_LSF_MOSAIC_INFO_T;
 
 
-typedef struct RKGFX_NVR_wireframe_info_s{
+typedef struct RKGFX_LSF_WIREFRAME_INFO_S{
     int left;
     int top;
     int right;
@@ -74,16 +73,16 @@ typedef struct RKGFX_NVR_wireframe_info_s{
     int rpx;
     int bpx;
  
-} RKGFX_NVR_wireframe_info_t;
+} RKGFX_LSF_WIREFRAME_INFO_T;
 
-typedef struct RKGFX_NVR_alpha_lut_info_s{
+typedef struct RKGFX_LSF_ALPHA_LUT_INFO_S{
    unsigned char map_0;
    unsigned char map_1;
    
-} RKGFX_NVR_alpha_lut_info_t;
+} RKGFX_LSF_ALPHA_LUT_INFO_T;
 
 
-typedef struct RKGFX_NVR_layer_info_s{
+typedef struct RKGFX_LSF_LAYER_INFO_S{
     int fd;
     int afbc_flag;
     int format;
@@ -97,16 +96,16 @@ typedef struct RKGFX_NVR_layer_info_s{
     int bottom;
     int focuswin;
     int rotation;
-    RKGFX_NVR_quadrl_t quadril_info;
-    RKGFX_NVR_mosaic_info_t mosic_info;
-    RKGFX_NVR_wireframe_info_t wireframe_info;
-    RKGFX_NVR_alpha_lut_info_t alpha_lut_info;
-} RKGFX_NVR_layer_info_t;
+    RKGFX_LSF_QUADRL_INFO_T quadril_info;
+    RKGFX_LSF_MOSAIC_INFO_T mosic_info;
+    RKGFX_LSF_WIREFRAME_INFO_T wireframe_info;
+    RKGFX_LSF_ALPHA_LUT_INFO_T alpha_lut_info;
+} RKGFX_LSF_LAYER_INFO_T;
 
-typedef struct RKGFX_NVR_layer_list_s{
-    RKGFX_NVR_layer_info_t srcLayerInfo[MAXLayer];
-    RKGFX_NVR_layer_info_t dstLayerInfo[MAXLayer];
-    RKGFX_NVR_lines_t lineSet;
+typedef struct RKGFX_LSF_LAYER_LIST_S{
+    RKGFX_LSF_LAYER_INFO_T srcLayerInfo[MAXLayer];
+    RKGFX_LSF_LAYER_INFO_T dstLayerInfo[MAXLayer];
+    RKGFX_LSF_LINES_T lineSet;
     int numLayer;
     int op;
     float wfRgb[3];
@@ -114,19 +113,19 @@ typedef struct RKGFX_NVR_layer_list_s{
     int px;
     int pxfc;
     int imgReserve;
-} RKGFX_NVR_layer_list_t;
+} RKGFX_LSF_LAYER_LIST_T;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-void* RKGFX_NVR_create();
-int   RKGFX_NVR_init(void *p,int screenW,int screenH,int priority);
-int   RKGFX_NVR_composite(void *p,RKGFX_NVR_layer_list_t *layerinfo);
-void* RKGFX_NVR_create_fence(void *p);
-int   RKGFX_NVR_wait_fence(void *p,void *fence);
-int   RKGFX_NVR_destroy(void *p);
+void* RKGFX_LSF_Create();
+int   RKGFX_LSF_Init(void *p,int screenW,int screenH,int priority);
+int   RKGFX_LSF_Composite(void *p,RKGFX_LSF_LAYER_LIST_T *layerinfo);
+void* RKGFX_LSF_CreateFence(void *p);
+int   RKGFX_LSF_WaitFence(void *p,void *fence);
+int   RKGFX_LSF_Destroy(void *p);
 
 #ifdef __cplusplus
 }
