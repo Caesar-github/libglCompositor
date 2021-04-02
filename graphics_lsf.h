@@ -1,9 +1,11 @@
 #ifndef GLPORCESS_H
 #define GLPORCESS_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include <sched.h>
+#define MAGIC   0x3141592
 
 #define EGL_ITU_REC601_EXT                0x327F
 #define EGL_ITU_REC709_EXT                0x3280
@@ -47,7 +49,7 @@ typedef struct RKGFX_LSF_QUADRL_INFO_S {
     //               |     |
     //               |     |
     //               |     |
-    //        (x1,y1)------- (x2,y2)    
+    //        (x1,y1)------- (x2,y2)
     int lineW;
     int quadBox;   // If you want to render the border this flag is set to 1
 } RKGFX_LSF_QUADRL_INFO_T;
@@ -72,21 +74,20 @@ typedef struct RKGFX_LSF_WIREFRAME_INFO_S{
     int tpx;
     int rpx;
     int bpx;
- 
 } RKGFX_LSF_WIREFRAME_INFO_T;
 
 typedef struct RKGFX_LSF_ALPHA_LUT_INFO_S{
    unsigned char map_0;
-   unsigned char map_1;
-   
+   unsigned char map_1; 
 } RKGFX_LSF_ALPHA_LUT_INFO_T;
-
 
 typedef struct RKGFX_LSF_LAYER_INFO_S{
     int fd;
+    unsigned int fd_id;
+    unsigned int  chID;
     int afbc_flag;
     int format;
-    int color_space ;
+    int color_space;
     int sample_range;
     int width;
     int height;
@@ -100,6 +101,7 @@ typedef struct RKGFX_LSF_LAYER_INFO_S{
     RKGFX_LSF_MOSAIC_INFO_T mosic_info;
     RKGFX_LSF_WIREFRAME_INFO_T wireframe_info;
     RKGFX_LSF_ALPHA_LUT_INFO_T alpha_lut_info;
+    int reserve[32];
 } RKGFX_LSF_LAYER_INFO_T;
 
 typedef struct RKGFX_LSF_LAYER_LIST_S{
@@ -113,6 +115,8 @@ typedef struct RKGFX_LSF_LAYER_LIST_S{
     int px;
     int pxfc;
     int imgReserve;
+    int reserve[32];    
+    int tsize ;
 } RKGFX_LSF_LAYER_LIST_T;
 
 #ifdef __cplusplus
@@ -126,6 +130,7 @@ int   RKGFX_LSF_Composite(void *p,RKGFX_LSF_LAYER_LIST_T *layerinfo);
 void* RKGFX_LSF_CreateFence(void *p);
 int   RKGFX_LSF_WaitFence(void *p,void *fence);
 int   RKGFX_LSF_Destroy(void *p);
+int   RKGFX_LSF_ReleaseChannel(void *p, unsigned int  chID);
 
 #ifdef __cplusplus
 }
