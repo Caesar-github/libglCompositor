@@ -78,7 +78,7 @@ typedef struct RKGFX_LSF_WIREFRAME_INFO_S{
 
 typedef struct RKGFX_LSF_ALPHA_LUT_INFO_S{
    unsigned char map_0;
-   unsigned char map_1; 
+   unsigned char map_1;
 } RKGFX_LSF_ALPHA_LUT_INFO_T;
 
 typedef struct RKGFX_LSF_LAYER_INFO_S{
@@ -115,7 +115,7 @@ typedef struct RKGFX_LSF_LAYER_LIST_S{
     int px;
     int pxfc;
     int imgReserve;
-    int reserve[32];    
+    int reserve[32];
     int tsize ;
 } RKGFX_LSF_LAYER_LIST_T;
 
