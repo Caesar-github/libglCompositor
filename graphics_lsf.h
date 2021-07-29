@@ -13,6 +13,9 @@
 #define EGL_YUV_FULL_RANGE_EXT            0x3282
 #define EGL_YUV_NARROW_RANGE_EXT          0x3283
 
+#define GRAPHICS_ROT_MIRROR        1800
+#define GRAPHICS_ROT_FLIP          900
+
 typedef enum {
     RKGFX_LSF_OP_RENDER_TEXTURE = 0,
     RKGFX_LSF_OP_COLOR_FILL,
@@ -117,7 +120,7 @@ typedef struct RKGFX_LSF_LAYER_LIST_S{
     int px;
     int pxfc;
     int imgReserve;
-    int reserve[32];
+    int reserve[32];   // reserve[0], 保留默认清屏的颜色。  reserve[1], 传递几个屏的信息
     int tsize ;
 } RKGFX_LSF_LAYER_LIST_T;
 
