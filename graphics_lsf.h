@@ -136,6 +136,7 @@ void* RKGFX_LSF_CreateFence(void *p);
 int   RKGFX_LSF_WaitFence(void *p,void *fence);
 int   RKGFX_LSF_Destroy(void *p);
 int   RKGFX_LSF_ReleaseChannel(void *p, unsigned int  chID);
+unsigned int RKGFX_LSF_Calc_Afbc_MemSize(const int width, const int height,const int format);
 
 #ifdef __cplusplus
 }
